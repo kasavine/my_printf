@@ -113,6 +113,40 @@ char *itoa_signed(int number, int base) // va_list args_p
     return (result);
 }
 
+char *pointer_to_string(unsigned long int number, int base)
+{
+    unsigned long int original_n;
+    unsigned int len;
+    char *result;
+    unsigned long int temp_n;
+
+    original_n = number;
+    len = 0;
+    original_n = original_n > 0 ? original_n : -original_n;
+    while (number)
+    {
+        number = number / base;
+        len++;
+    }
+    result = (char *)malloc(sizeof(char) * len + 1);
+    if (!(result))
+        return (0);
+    *(result + len) = '\0';
+    len--;
+    while(original_n > 0)
+    {
+        temp_n = original_n % base;
+        if (temp_n < 10) {
+            *(result + len) = temp_n + '0';
+        } else {
+            *(result + len) = ((temp_n) - 10 + 97);
+        }
+        original_n = original_n / base;
+        len--;
+    }
+    return (result);
+}
+
 int my_printf(char *restrict format, ...)
 {
     va_list args_p;
@@ -179,7 +213,7 @@ int my_printf(char *restrict format, ...)
 				break;
             case 'p':
 			    value_p = va_arg(args_p, intptr_t);
-                res_convert = itoa_unsigned_base(value_p, 16);
+                res_convert = pointer_to_string(value_p, 16);
                 write(1, "0x", 2);
                 my_putstr(res_convert);
                 len = my_strlen(res_convert);
