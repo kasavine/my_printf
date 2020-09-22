@@ -28,3 +28,16 @@ The printf is probably the most notable function that uses this principle. The p
 - macro va_end: GCC will not even notice it but you could still add it in case you use a different compiler.
 
 The list is declared by using the va_list macro, then the user checks if the list is empty or not. After this, the list is initiated using the va_start macro and passing the name of the list as well as the amount of arguments it has (represented by the letter ‘n’ in this case).
+
+sum.c - training to use arguments;
+
+- printinf a character - done
+- printing a set of characters - string - done
+- printing signed decimal - done
+- printing unsigned decimal - done
+- printing unsigned octal - done
+- printing unsigned hexadecimal - done
+- printing the address of pointer - hexadecimal with 0x.... - XXX
+
+How to test code against memory errors by compiling with the debugging flags -g3 -fsanitize=address 
+Code must be compiled with the flags -Wall -Wextra -Werror - done
