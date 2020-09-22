@@ -17,7 +17,7 @@ void my_putstr(char *s)
     }
 }
 
-// char *xtoa(int number, int base, int sign) // va_list args_p
+// char *itoa_base(int number, int base, int sign) // va_list args_p
 // {
 //     long value = number;
 //     if (sign == 1) {
@@ -30,16 +30,14 @@ void my_putstr(char *s)
 
 char *itoa_unsigned_base(unsigned int number, int base)
 {
-    unsigned int n;
+    unsigned int original_n;
     unsigned int len;
     char *result;
-    unsigned int tempNumber;
-    unsigned int originalNumber;
+    unsigned int temp_n;
 
-    originalNumber = number;
-    n = number;
+    original_n = number;
     len = 0;
-    n = n > 0 ? n : -n;
+    original_n = original_n > 0 ? original_n : -original_n;
     while (number)
     {
         number = number / base;
@@ -50,15 +48,15 @@ char *itoa_unsigned_base(unsigned int number, int base)
         return (0);
     *(result + len) = '\0';
     len--;
-    while(n > 0)
+    while(original_n > 0)
     {
-        tempNumber = n % base;
-        if (tempNumber < 10) {
-            *(result + len) = tempNumber + '0';
+        temp_n = original_n % base;
+        if (temp_n < 10) {
+            *(result + len) = temp_n + '0';
         } else {
-            *(result + len) = ((tempNumber) - 10 + 97);
+            *(result + len) = ((temp_n) - 10 + 97);
         }
-        n = n / base;
+        original_n = original_n / base;
         len--;
     }
     return (result);
@@ -66,16 +64,14 @@ char *itoa_unsigned_base(unsigned int number, int base)
 
 char *itoa_signed(int number, int base) // va_list args_p
 {
-    int n;
+    int original_n;
     int len;
     char *result;
-    int tempNumber;
-    int originalNumber;
+    int temp_n;
 
-    originalNumber = number;
-    n = number;
-    len = n > 0 ? 0 : 1;
-    n = n > 0 ? n : -n;
+    original_n = number;
+    len = original_n > 0 ? 0 : 1;
+    original_n = original_n > 0 ? original_n : -original_n;
     while (number)
     {
         number = number / base;
@@ -86,18 +82,18 @@ char *itoa_signed(int number, int base) // va_list args_p
         return (0);
     *(result + len) = '\0';
     len--;
-    while(n > 0)
+    while(original_n > 0)
     {
-        tempNumber = n % base;
-        if (base == 16 && originalNumber < 0) {
-            tempNumber = 15 - tempNumber + 1;
+        temp_n = original_n % base;
+        if (base == 16 && original_n < 0) { // n, originalNumber
+            temp_n = 15 - temp_n + 1;
         }
-        if (tempNumber < 10) {
-            *(result + len) = tempNumber + '0';
+        if (temp_n < 10) {
+            *(result + len) = temp_n + '0';
         } else {
-            *(result + len) = ((tempNumber) - 10 + 97); // 97 A, 65 a
+            *(result + len) = ((temp_n) - 10 + 97); // 97 A, 65 a
         }
-        n = n/base;
+        original_n = original_n / base;
         len--;
     }
     if (len == 0 && result[1] != '\0')
@@ -161,55 +157,4 @@ void my_printf(char *restrict format, ...)
         }
     }
     va_end(args_p); 
-}
-
-#include <stdio.h> //delete before submitting
-int main()
-{
-	char c = 'C';
-	char *string = "STRING";
-
-    // testing signed decimal
-    my_printf("signed decimal: result of my_printf [%d], [%d]", 18, -18);
-    printf("\n");
-    printf("signed decimal: original result [%d], [%d]", 18, -18);
-	printf("\n\n");
-
-    // testing unsigned octal
-    my_printf("unsigned octal: result of my_printf [%o], [%o]", 7, -8);
-    printf("\n");
-    printf("unsigned octal: original result [%o], [%o]", 7, -8);
-	printf("\n\n");
-
-    // testing unsigned decimal
-    my_printf("unsigned decimal: result of my_printf [%u], [%u]", 255, -109);
-    printf("\n");
-    printf("unsigned decimal: original result [%u], [%u]", 255, -109);
-	printf("\n\n");
-
-    // testing unsigned hexadecimal
-    my_printf("unsigned hexadecimal: result of my_printf [%x], [%x], [%x], [%x]", 15, 16, 3405723, -3405723);
-    printf("\n");
-    printf("unsigned hexadecimal: original result [%x], [%x], [%x], [%x]", 15, 16, 3405723, -3405723);
-	printf("\n\n");
-
-    // testing unsigned char
-    my_printf("before[ %c ]after", c);
-    printf("\n");
-    printf("before[ %c ]after", c);
-	printf("\n\n");
-	
-    // testing seq of chars
-    my_printf("before[ %s ]after", string);
-    printf("\n");
-    printf("before[ %s ]after", string);
-	printf("\n\n");
-
-    // void * - printed in hexadecimal
-    int a = 10;
-    int *b = &a;
-    printf("%x\n",b); //       45b6a334          d46c6714
-    printf("%p\n",b); // 0x7ffe45b6a334    0x7ffcd46c6714
-
-	return 0;
 }
