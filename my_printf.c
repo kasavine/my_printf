@@ -17,6 +17,18 @@ void my_putstr(char *s)
     }
 }
 
+int my_strlen(char *str)
+{
+    int i;
+
+    i = 0;
+    while (str[i])
+    {
+        i++;
+    }
+    return (i);
+}
+
 // char *itoa_base(int number, int base, int sign) // va_list args_p
 // {
 //     long value = number;
@@ -85,7 +97,7 @@ char *itoa_signed(int number, int base) // va_list args_p
     while(original_n > 0)
     {
         temp_n = original_n % base;
-        if (base == 16 && original_n < 0) { // n, originalNumber
+        if (base == 16 && original_n < 0) {
             temp_n = 15 - temp_n + 1;
         }
         if (temp_n < 10) {
@@ -101,21 +113,26 @@ char *itoa_signed(int number, int base) // va_list args_p
     return (result);
 }
 
-void my_printf(char *restrict format, ...)
+int my_printf(char *restrict format, ...)
 {
     va_list args_p;
     char *p;
+    int written_chars;
+    int len;
     int value;
     char *sval;
     char *res_convert;
+    intptr_t value_p;
 
     va_start(args_p, format);
+    written_chars = 0;
     
     for (p = format; *p; p++)
     {
         if (*p != '%')
         {
             my_putchar(*p);
+            written_chars++;
             continue;
         }
         switch (*++p)
@@ -124,37 +141,54 @@ void my_printf(char *restrict format, ...)
                 value = va_arg(args_p, int);
                 res_convert = itoa_signed(value, 10);
                 my_putstr(res_convert);
+                len = my_strlen(res_convert);
+                written_chars += len;
 				break;
             case 'o':
                 value = va_arg(args_p, int);
                 res_convert = itoa_unsigned_base(value, 8);
                 my_putstr(res_convert);
+                len = my_strlen(res_convert);
+                written_chars += len;
                 break;
             case 'u':
                 value = va_arg(args_p, int);
                 res_convert = itoa_unsigned_base(value, 10);
                 my_putstr(res_convert);
+                len = my_strlen(res_convert);
+                written_chars += len;
                 break;
 			case 'x':
                 value = va_arg(args_p, int);
                 res_convert = itoa_unsigned_base(value, 16);
                 my_putstr(res_convert);
+                len = my_strlen(res_convert);
+                written_chars += len;
                 break;
 			case 'c':
                 value = va_arg(args_p, int);
-                my_putchar(value);       
+                my_putchar(value);  
+                written_chars++;     
 				break;
 			case 's':
                 sval = va_arg(args_p, char *);
                 my_putstr(sval);
+                len = my_strlen(sval);
+                written_chars += len;
 				break;
             case 'p':
-			    // p // print a pointer???
+			    value_p = va_arg(args_p, intptr_t);
+                res_convert = itoa_unsigned_base(value_p, 16);
+                write(1, "0x", 2);
+                my_putstr(res_convert);
+                len = my_strlen(res_convert);
+                written_chars += len + 2;
                 break;
-			default:
-				my_putchar(*p);
-				break;
+			// default:
+			// 	my_putchar(*p);
+			// 	break;
         }
     }
+    return(written_chars);
     va_end(args_p); 
 }
