@@ -123,6 +123,7 @@ int my_printf(char *restrict format, ...)
     char *sval;
     char *res_convert;
     intptr_t value_p;
+    // intptr_t *res_ptr_convert;
 
     va_start(args_p, format);
     written_chars = 0;
