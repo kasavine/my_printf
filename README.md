@@ -37,7 +37,7 @@ sum.c - training to use arguments;
 - printing unsigned decimal - done
 - printing unsigned octal - done
 - printing unsigned hexadecimal - done
-- printing the address of pointer - hexadecimal with 0x.... - XXX
+- printing the address of pointer - hexadecimal with 0x.... - done
 
-How to test code against memory errors by compiling with the debugging flags -g3 -fsanitize=address
+How to test code against memory errors by compiling with the debugging flags -g3 -fsanitize=address ???
 Code must be compiled with the flags -Wall -Wextra -Werror - done
