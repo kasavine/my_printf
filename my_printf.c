@@ -1,46 +1,51 @@
 #include <stdarg.h>
 #include <unistd.h>
 #include <stdlib.h>
-
+#include <stddef.h>
 void my_putchar(char c)
 {
     write(1, &c, 1);
 }
 
-void my_putstr(char* s)
+int my_putstr(char* s)
 {
+    if (!s)
+    {
+        return 0;
+    }
     int i = 0;
     while (s[i])
     {
         my_putchar(s[i++]);
     }
+    return i;
 }
 
-int my_strlen(char* str)
-{
-    int i = 0;
-    while (str[i])
-    {
-        i++;
-    }
-    return (i);
-}
 char* itoa_unsigned_base(unsigned int number, int base)
 {
     unsigned int original_n = number;
     unsigned int len = 0;
-    char* result;
+    char* result = NULL;
     unsigned int temp_n;
 
     original_n = original_n > 0 ? original_n : -original_n;
-    while (number)
+    if (number != 0)
     {
-        number = number / base;
-        len++;
+        while (number)
+        {
+            number = number / base;
+            len++;
+        }
+        result = (char*)malloc(sizeof(char) * len + 1);
     }
-    if (!(result = (char*)malloc(sizeof(char) * len + 1)))
+    else
     {
-        return (0);
+        len = 1;
+        result = (char*)malloc(sizeof(char) * (len + 1)); //2
+    }
+    if (!(result))
+    {
+        return NULL;
     }
     *(result + len) = '\0';
     len--;
@@ -56,17 +61,17 @@ char* itoa_unsigned_base(unsigned int number, int base)
     }
     if (len == 0 && result[1] == '\0')
     {
-        *(result + len) =  0;
+        *(result) = '0';
     }
     return result;
 }
 
 char* itoa_signed_base(int number, int base)
 {
-    int original_n = number;
-    int len;
     char* result;
+    int len;
     int temp_n;
+    int original_n = number;
 
     len = original_n > 0 ? 0 : 1;
     original_n = original_n > 0 ? original_n : -original_n;
@@ -77,7 +82,7 @@ char* itoa_signed_base(int number, int base)
     }
     if (!(result = (char*)malloc(sizeof(char) * len + 1)))
     {
-        return (0);
+        return NULL;
     }
     *(result + len) = '\0';
     len--;
@@ -97,7 +102,7 @@ char* itoa_signed_base(int number, int base)
     }
     if (len == 0 && result[1] == '\0')
     {
-        *(result + len) =  0;
+        *(result + len) = '0';
     }
     else if (len == 0 && result[1] != '\0')
     {
@@ -110,7 +115,7 @@ char* pointer_to_string(unsigned long int number, int base)
 {
     unsigned long int original_n = number;
     unsigned int len = 0;
-    char* result;
+    char* result = NULL;
     unsigned long int temp_n;
 
     original_n = original_n > 0 ? original_n : -(original_n);
@@ -121,7 +126,7 @@ char* pointer_to_string(unsigned long int number, int base)
     }
     if (!(result = (char*)malloc(sizeof(char) * len + 1)))
     {
-        return (0);
+        return NULL;
     }
     *(result + len) = '\0';
     len--;
@@ -141,12 +146,12 @@ char* pointer_to_string(unsigned long int number, int base)
 int my_printf(char* restrict format, ...)
 {
     va_list args_p;
-    char* p;
-    int len;
-    int value;
     char* sval;
+    char* p;
     char* res_convert = NULL;
     intptr_t value_p;
+    int len;
+    int value;
     int written_chars = 0;
 
     va_start(args_p, format);
@@ -164,8 +169,7 @@ int my_printf(char* restrict format, ...)
             {
                 value = va_arg(args_p, int);
                 res_convert = itoa_signed_base(value, 10);
-                my_putstr(res_convert);
-                len = my_strlen(res_convert);
+                len = my_putstr(res_convert);
                 written_chars += len;
                 break;
             }
@@ -173,8 +177,7 @@ int my_printf(char* restrict format, ...)
             {
                 value = va_arg(args_p, int);
                 res_convert = itoa_unsigned_base(value, 8);
-                my_putstr(res_convert);
-                len = my_strlen(res_convert);
+                len = my_putstr(res_convert);
                 written_chars += len;
                 break;
             }
@@ -182,8 +185,7 @@ int my_printf(char* restrict format, ...)
             {
                 value = va_arg(args_p, int);
                 res_convert = itoa_unsigned_base(value, 10);
-                my_putstr(res_convert);
-                len = my_strlen(res_convert);
+                len = my_putstr(res_convert);
                 written_chars += len;
                 break;
             }
@@ -191,8 +193,7 @@ int my_printf(char* restrict format, ...)
             {
                 value = va_arg(args_p, int);
                 res_convert = itoa_unsigned_base(value, 16);
-                my_putstr(res_convert);
-                len = my_strlen(res_convert);
+                len = my_putstr(res_convert);
                 written_chars += len;
                 break;
             }
@@ -206,8 +207,7 @@ int my_printf(char* restrict format, ...)
             case 's':
             {
                 sval = va_arg(args_p, char*);
-                my_putstr(sval);
-                len = my_strlen(sval);
+                len = my_putstr(sval);
                 written_chars += len;
                 break;
             }
@@ -216,8 +216,7 @@ int my_printf(char* restrict format, ...)
                 value_p = va_arg(args_p, intptr_t);
                 res_convert = pointer_to_string(value_p, 16);
                 write(1, "0x", 2);
-                my_putstr(res_convert);
-                len = my_strlen(res_convert);
+                len = my_putstr(res_convert);
                 written_chars += len + 2;
                 break;
             }
