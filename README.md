@@ -1,5 +1,8 @@
 # my_printf
 
+```
+int my_printf(char * restrict format, ...);
+```
 my_printf() function writes output to stdout, the standard output stream.
 
 The format string is composed of zero or more directives: ordinary characters (not %), which are copied unchanged to the output stream; 
