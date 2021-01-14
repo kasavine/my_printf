@@ -40,6 +40,5 @@ After this, the list is initiated using the va_start macro and passing the name 
 - print unsigned octal
 - print unsigned hexadecimal
 - print the address of pointer - hexadecimal with 0x....
-
-To test code against memory errors by compiling with the debugging flags **-g3 -fsanitize=address**
-Code must be compiled with the flags **-Wall -Wextra -Werror**
+- **-g3 -fsanitize=address** (test code against memory errors by compiling with the debugging flags)
+- **-Wall -Wextra -Werror** (code must be compiled with the flags)
