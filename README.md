@@ -5,6 +5,8 @@ int my_printf(char * restrict format, ...);
 ```
 my_printf() function writes output to stdout, the standard output stream.
 
+Function that works almost like real printf.
+
 The format string is composed of zero or more directives: ordinary characters (not %), which are copied unchanged to the output stream; 
 and conversion specifications, each of which results in fetching zero or more subsequent arguments.
 
@@ -47,3 +49,5 @@ After this, the list is initiated using the va_start macro and passing the name 
 - **-g3 -fsanitize=address** (test code against memory errors by compiling with the debugging flags)
 - **-Wall -Wextra -Werror** (code must be compiled with the flags)
 - *write, malloc, free, stdarg.h*
+
+
