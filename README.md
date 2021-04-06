@@ -2,8 +2,8 @@
 
 ### To see how it works:
 ```
-git clone https://github.com/kasavine/MY_PRINTF.git
-cd MY_PRINTF
+git clone https://github.com/kasavine/my_printf.git
+cd my_printf
 
 Compile: gcc my_printf.c test.c
 Run: ./a.out
