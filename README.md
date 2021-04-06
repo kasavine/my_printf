@@ -1,8 +1,16 @@
 ###  MY_PRINTF
 
-`int my_printf(char * restrict format, ...);`
+### To see how it works:
+```
+git clone https://github.com/kasavine/MY_PRINTF.git
+cd MY_PRINTF
 
-**my_printf()** function writes output to stdout - the standard output stream.
+Compile: gcc my_printf.c test.c
+Run: ./a.out
+```
+
+- `int my_printf(char * restrict format, ...);`
+- **my_printf()** function writes output to stdout - the standard output stream.
 
 After the %, the following appear in sequence:
 
